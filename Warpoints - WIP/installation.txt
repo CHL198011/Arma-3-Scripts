@@ -1,0 +1,85 @@
+Warpoints Installation @ Jackdevo dev@itsjack.dev
+Note: When copying code, copy everything after the denoted arrow '-->'
+
+Complete the folowing steps in order:
+
+--------------
+Mission Setup
+--------------
+
+1. Copy the file 'Script/Config_Warpoints.hpp' in to the '/config' folder in your mission
+
+2. Copy the file 'Script/fn_warpoints.sqf' in to the '/core/medical' folder in your mission
+
+3. Go in to the file '/config/Config_Master' and add this line of code
+--> #include "Config_Warpoints.hpp"
+
+4. Go in to '/Functions.hpp' and underneath 'class revivePlayer {};' add this line of code
+--> class warpoints {};
+
+5. Go in to '/core/medical/fn_onPlayerKilled.sqf', add this line of code at the end of the file
+--> [2, _unit, _killer] call life_fnc_warpoints;
+
+6. Go in to '/CfgRemoteExec.hpp', add this line of code under '/* Functions for Everyone */'
+--> F(hint,ANYONE)
+
+--------------
+DB Setup
+--------------
+
+1. In your database execute the following SQL statement
+-->  ALTER TABLE players ADD warpoints INT(11) NOT NULL DEFAULT '0'
+
+--------------
+Configuration
+--------------
+
+The configuration file should be laid out pretty clearly, but here is an overview:
+
+There are three distance multipliers:
+	normalRange = After killing someone at 0-300m, warpoints GAINED multiplied by specified amount
+	mediumRange = After killing someone at 300-500m, warpoints GAINED multiplied by specified amount
+	longRange = After killing someone at 500+, warpoints GAINED multiplied by specified amount
+	
+Distance multipliers do not affect warpoints lost by victims
+
+The value of 'playerIDfield' should corrospond to the name of the database field that deals with PlayerID's, it should
+either be "playerID" or "pid" in usual circumstances. For 5.0 servers, leave this value as the default.
+
+
+Under 'Config_Weapons {' there are two example classes. Do not delete the default class!!
+
+Each class name corrosponds to a gun classname, in the event of being killed/killing using said gun, the amount of
+warpoints specified for victim/killer will be gained/lost. If a player is killed by a weapon that isn't speciifed in the config,
+the values in the default class will be used.
+
+--------------
+USAGE
+--------------
+
+This script has two main functions:
+
+- Get current warpoints
+- Add/Remove warpoints
+
+To get a players current warpoints as an integer, you call the function:
+	_wp = [0, player] call life_fnc_warpoints;
+To update a players warpoints, call this function:
+	[1, player, amount] call life_fnc_warpoints;
+	
+Notes:
+	In the above two examples, 'player' can be one of the following:
+		- Player ID of player to alter warpoints for (as an integer or a string)
+		- Player Object (e.g _unit)
+		- An empty string (Meaning the player that the code is being ran on)
+		
+	Pretty simple stuff, but to remove warpoints use a negative integer as the amount parameter. Don't be a spoon.
+	
+WARNING:
+	When players are killed, the script will NOT allow the warpoint value of a player to go below zero.
+	
+	When altering warpoints manually through the function, it would be good practice to not allow warpoints of a player,
+	to go below zero, by first checking their warpoint balance. Otherwise, you would be a spoon.
+	
+	
+First installation guide I have ever made so please give me some tips, so I can re-write it!

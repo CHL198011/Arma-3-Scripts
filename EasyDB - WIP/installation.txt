@@ -1,0 +1,48 @@
+EasyDB Installation @ Jackdevo dev@itsjack.dev
+Note: When copying code, copy everything after the denoted arrow '-->'
+Warning: This script is designed for pure beginners.
+		 This script is NOT secure or designed with security in mind.
+		 This script is NOT designed with performance in mind.
+		 This script hasn't beent tested with arrays (be it updating, or retrieving from the database)
+
+
+Complete the folowing steps in order:
+
+--------------
+Mission Setup
+--------------
+
+1. Copy the file 'Script/easyDB.sqf' in to the '/core' folder in your mission
+
+2. Go in to '/Functions.hpp' and underneath 'class survival {};' add this line of code
+--> class easyDB {};
+
+--------------
+DB Setup
+--------------
+
+1. In your database execute the following SQL statement
+-->  ALTER TABLE players ADD warpoints INT(11) NOT NULL DEFAULT '0'
+
+--------------
+Configuration
+--------------
+
+No configuration is required for this script
+
+--------------
+USAGE
+--------------
+
+Input Params:
+	0 - Player to edit field of: Player ID (Int/Str) / Unit Object (Obj) / Empty String (This Player)
+	1 - Database Table (Str)
+	2 - Database Field (Str)
+	3 - Action (Int) : either 0 (get) or 1 (update)
+	4 - Value (Integer / String) (optional) - New value for field if updating
+	
+Example Uses:
+	[_unit, "players", "mediclevel", "update", 5] call life_fnc_easyDB; #Returns Nothing
+	[_unit, "players", "coplevel", "get"] call life_fnc_easyDB; #Returns value of coplevel
+	["", "players", "mediclevel", "update", 5] call life_fnc_easyDB; #Returns Nothing
+
