@@ -1,6 +1,6 @@
 # Arma 3 Scripts
 
-![](https://img.shields.io/github/followers/jackdevo?style=social)
+![](https://img.shields.io/github/followers/jackdevonshire?style=social)
 
 A collection of Arma 3 scripts I have created for the AsYetUntitled AltisLife gamemode.
 
